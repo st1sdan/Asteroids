@@ -1,9 +1,0 @@
-[gd_resource type="StyleBoxLine" format=3 uid="uid://bc4wee5n5efk4"]
-
-[resource]
-resource_local_to_scene = true
-resource_name = "OrangeOutline"
-color = Color(1, 0.415686, 0, 1)
-grow_begin = 300.0
-grow_end = 6.0
-thickness = 32
