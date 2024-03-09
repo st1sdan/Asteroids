@@ -1,0 +1,173 @@
+[gd_scene load_steps=13 format=3 uid="uid://dxuem4gaeqfdo"]
+
+[ext_resource type="Script" path="res://Scripts/options.gd" id="1_im2on"]
+[ext_resource type="PackedScene" uid="uid://r8kncn7ys0bj" path="res://Scenes/filter_setup.tscn" id="1_s1psu"]
+[ext_resource type="Shader" path="res://Shaders/background_stars.gdshader" id="2_p3ubq"]
+[ext_resource type="PackedScene" uid="uid://ctrck4nfh0a1c" path="res://Scenes/volume_slider.tscn" id="4_yvq5q"]
+[ext_resource type="FontFile" uid="uid://bclm34pt3j3nk" path="res://Config/PressStart2P-Regular.ttf" id="5_je0p1"]
+[ext_resource type="StyleBox" uid="uid://bc4wee5n5efk4" path="res://Config/menu.tres" id="6_gpdiv"]
+[ext_resource type="Script" path="res://Scripts/volume_slider_music.gd" id="6_pb1f4"]
+[ext_resource type="Script" path="res://Scripts/volume_slider_sfx.gd" id="7_2k6qq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4g6sl"]
+shader = ExtResource("2_p3ubq")
+shader_parameter/dimensions = Vector2(1024, 600)
+shader_parameter/small_stars = 50.0
+shader_parameter/small_stars_far_size = 0.5
+shader_parameter/small_stars_near_size = 1.0
+shader_parameter/far_stars_color = Color(0.5, 0, 1, 1)
+shader_parameter/near_stars_color = Color(1, 1, 1, 1)
+shader_parameter/base_scroll_speed = 0.05
+shader_parameter/additional_scroll_speed = 0.05
+
+[sub_resource type="Gradient" id="Gradient_w6tae"]
+colors = PackedColorArray(0, 1.8049e-08, 0.15702, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v6u5t"]
+gradient = SubResource("Gradient_w6tae")
+width = 960
+height = 640
+fill_from = Vector2(0.566406, 0.486328)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_3o5s8"]
+resource_local_to_scene = true
+resource_name = "OrangeOutline"
+color = Color(1, 0.415686, 0, 1)
+grow_begin = 300.0
+grow_end = 6.0
+thickness = 45
+
+[node name="Options" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_im2on")
+
+[node name="BackGround" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_4g6sl")
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_v6u5t")
+centered = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -134.0
+offset_top = -125.0
+offset_right = 135.0
+offset_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 23
+
+[node name="Master" parent="VBoxContainer" instance=ExtResource("4_yvq5q")]
+layout_mode = 2
+max_value = 9.0
+value = 5.0
+rounded = true
+bus_name = "Master"
+
+[node name="Label" type="Label" parent="VBoxContainer/Master"]
+layout_mode = 0
+offset_top = -21.0
+offset_right = 221.0
+offset_bottom = 2.0
+theme_override_fonts/font = ExtResource("5_je0p1")
+theme_override_font_sizes/font_size = 17
+text = "MASTER VOLUME"
+
+[node name="music" parent="VBoxContainer" instance=ExtResource("4_yvq5q")]
+layout_mode = 2
+max_value = 9.0
+value = 5.0
+rounded = true
+script = ExtResource("6_pb1f4")
+bus_name = "music"
+
+[node name="Label" type="Label" parent="VBoxContainer/music"]
+layout_mode = 0
+offset_top = -21.0
+offset_right = 85.0
+offset_bottom = 2.0
+theme_override_fonts/font = ExtResource("5_je0p1")
+theme_override_font_sizes/font_size = 17
+text = "MUSIC"
+
+[node name="sfx" parent="VBoxContainer" instance=ExtResource("4_yvq5q")]
+layout_mode = 2
+max_value = 9.0
+value = 5.0
+rounded = true
+script = ExtResource("7_2k6qq")
+
+[node name="Label" type="Label" parent="VBoxContainer/sfx"]
+layout_mode = 0
+offset_top = -21.0
+offset_right = 221.0
+offset_bottom = 2.0
+theme_override_fonts/font = ExtResource("5_je0p1")
+theme_override_font_sizes/font_size = 17
+text = "SOUND EFFECTS
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("5_je0p1")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/focus = ExtResource("6_gpdiv")
+theme_override_styles/pressed_mirrored = ExtResource("6_gpdiv")
+flat = true
+language = "en"
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/OptionButton"]
+layout_mode = 0
+offset_top = -21.0
+offset_right = 221.0
+offset_bottom = 2.0
+theme_override_fonts/font = ExtResource("5_je0p1")
+theme_override_font_sizes/font_size = 17
+text = "DIFFICULTY"
+
+[node name="Credits & Help" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("5_je0p1")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/focus = SubResource("StyleBoxLine_3o5s8")
+text = "CREDITS & 
+HELP"
+flat = true
+alignment = 0
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 2
+offset_left = 106.0
+offset_top = 251.0
+offset_right = 375.0
+offset_bottom = 259.0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("5_je0p1")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("6_gpdiv")
+theme_override_styles/focus = ExtResource("6_gpdiv")
+text = "BACK"
+flat = true
+
+[node name="Filter Setup" parent="." instance=ExtResource("1_s1psu")]
+
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/Credits & Help" to="." method="_on_credits__help_pressed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]

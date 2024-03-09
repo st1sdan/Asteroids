@@ -1,0 +1,119 @@
+[gd_scene load_steps=14 format=3 uid="uid://cvo2kb4w0qoud"]
+
+[ext_resource type="PackedScene" uid="uid://r8kncn7ys0bj" path="res://Scenes/filter_setup.tscn" id="1_2mivl"]
+[ext_resource type="Script" path="res://addons/silent_wolf/Scores/Leaderboard.gd" id="1_6rj7c"]
+[ext_resource type="Shader" path="res://Shaders/background_stars.gdshader" id="2_xwvsw"]
+[ext_resource type="Theme" uid="uid://d2eakbmaefnt6" path="res://addons/silent_wolf/assets/themes/sw_theme.tres" id="3_uo1nq"]
+[ext_resource type="FontFile" uid="uid://bclm34pt3j3nk" path="res://Config/PressStart2P-Regular.ttf" id="4_eksqf"]
+[ext_resource type="PackedScene" uid="uid://clllbf6am8qdf" path="res://addons/silent_wolf/common/SWButton.tscn" id="5_i35h3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bks5k"]
+shader = ExtResource("2_xwvsw")
+shader_parameter/dimensions = Vector2(1024, 600)
+shader_parameter/small_stars = 50.0
+shader_parameter/small_stars_far_size = 0.5
+shader_parameter/small_stars_near_size = 1.0
+shader_parameter/far_stars_color = Color(0.5, 0, 1, 1)
+shader_parameter/near_stars_color = Color(1, 1, 1, 1)
+shader_parameter/base_scroll_speed = 0.05
+shader_parameter/additional_scroll_speed = 0.05
+
+[sub_resource type="Gradient" id="Gradient_d8gjk"]
+colors = PackedColorArray(0, 1.8049e-08, 0.15702, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_on0nn"]
+gradient = SubResource("Gradient_d8gjk")
+width = 960
+height = 640
+fill_from = Vector2(0.566406, 0.486328)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Theme" id="Theme_6fy8u"]
+
+[sub_resource type="Theme" id="Theme_42ugi"]
+default_font = ExtResource("4_eksqf")
+default_font_size = 15
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_gq0fa"]
+resource_local_to_scene = true
+resource_name = "OrangeOutline"
+color = Color(1, 0.415686, 0, 1)
+grow_begin = 300.0
+grow_end = 6.0
+thickness = 32
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_b5mig"]
+resource_local_to_scene = true
+resource_name = "OrangeOutline"
+color = Color(1, 0.415686, 0, 1)
+grow_begin = 300.0
+grow_end = 6.0
+thickness = 70
+
+[node name="Leaderboard" type="Node2D"]
+script = ExtResource("1_6rj7c")
+
+[node name="Filter Setup" parent="." instance=ExtResource("1_2mivl")]
+
+[node name="BackGround" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_bks5k")
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_on0nn")
+centered = false
+
+[node name="Board" type="VBoxContainer" parent="."]
+offset_right = 1477.0
+offset_bottom = 985.0
+scale = Vector2(0.325, 0.325)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_uo1nq")
+theme_override_constants/separation = 48
+alignment = 1
+
+[node name="TitleContainer" type="CenterContainer" parent="Board"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Board/TitleContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_eksqf")
+theme_override_font_sizes/font_size = 82
+text = "LEADERBOARD"
+horizontal_alignment = 1
+
+[node name="MessageContainer" type="CenterContainer" parent="Board"]
+visible = false
+layout_mode = 2
+
+[node name="TextMessage" type="Label" parent="Board/MessageContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_eksqf")
+theme_override_font_sizes/font_size = 36
+text = "Loading scores..."
+
+[node name="HighScores" type="CenterContainer" parent="Board"]
+layout_mode = 2
+theme = SubResource("Theme_6fy8u")
+
+[node name="ScoreItemContainer" type="VBoxContainer" parent="Board/HighScores"]
+layout_mode = 2
+theme = SubResource("Theme_42ugi")
+theme_type_variation = &"Lable"
+theme_override_constants/separation = 10
+
+[node name="CloseButtonContainer" type="CenterContainer" parent="Board"]
+layout_mode = 2
+
+[node name="CloseButton" parent="Board/CloseButtonContainer" instance=ExtResource("5_i35h3")]
+custom_minimum_size = Vector2(600, 80)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_eksqf")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/hover = SubResource("StyleBoxLine_gq0fa")
+theme_override_styles/focus = SubResource("StyleBoxLine_b5mig")
+text = "CLOSE LEADERBOARD"
+flat = true
+
+[connection signal="pressed" from="Board/CloseButtonContainer/CloseButton" to="." method="_on_close_button_pressed"]

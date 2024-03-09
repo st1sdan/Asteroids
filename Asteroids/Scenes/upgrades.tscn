@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://bteuy7jn4gk5w"]
+
+[ext_resource type="Script" path="res://Scripts/upgrades.gd" id="1_m3iqy"]
+[ext_resource type="Texture2D" uid="uid://dtbkuxbgy56jj" path="res://Assets/Upgrades.png" id="1_suwmp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4nfaf"]
+atlas = ExtResource("1_suwmp")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3a5c"]
+atlas = ExtResource("1_suwmp")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_u6lhn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4nfaf")
+}],
+"loop": true,
+"name": &"time_stop",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b3a5c")
+}],
+"loop": true,
+"name": &"triple_shot",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aelly"]
+radius = 16.0
+
+[node name="Upgrades" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_m3iqy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_u6lhn")
+animation = &"time_stop"
+frame_progress = 0.957658
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("1_suwmp")
+vframes = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+z_index = 1025
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_aelly")
+
+[node name="TripleShotTimer" type="Timer" parent="."]
+process_mode = 3
+wait_time = 5.0
+one_shot = true
+
+[node name="TimeStopTimer" type="Timer" parent="."]
+process_mode = 3
+wait_time = 3.0
+one_shot = true
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="TripleShotTimer" to="." method="_on_triple_shot_timer_timeout"]
+[connection signal="timeout" from="TimeStopTimer" to="." method="_on_time_stop_timer_timeout"]

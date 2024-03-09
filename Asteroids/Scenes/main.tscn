@@ -1,0 +1,179 @@
+[gd_scene load_steps=19 format=3 uid="uid://duwerpqdj7e32"]
+
+[ext_resource type="Script" path="res://Scripts/main_ui.gd" id="1_7gypy"]
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_jqu6t"]
+[ext_resource type="PackedScene" uid="uid://dgiod448q2qje" path="res://Scenes/player.tscn" id="1_qdr88"]
+[ext_resource type="PackedScene" uid="uid://r8kncn7ys0bj" path="res://Scenes/filter_setup.tscn" id="2_8ct72"]
+[ext_resource type="PackedScene" uid="uid://h4h5p6q21ddj" path="res://Scenes/enemy.tscn" id="2_53xaw"]
+[ext_resource type="AudioStream" uid="uid://5tnehnql2avy" path="res://Sounds/Background music.mp3" id="2_jr6st"]
+[ext_resource type="Script" path="res://Scripts/DebugLabel.gd" id="2_x4bms"]
+[ext_resource type="FontFile" uid="uid://bclm34pt3j3nk" path="res://Config/PressStart2P-Regular.ttf" id="2_x5ias"]
+[ext_resource type="Shader" path="res://Shaders/background_stars.gdshader" id="3_lc3is"]
+[ext_resource type="AudioStream" uid="uid://ddgfpbtsxp6m0" path="res://Sounds/Explosion.wav" id="11_kelbh"]
+[ext_resource type="AudioStream" uid="uid://k4vlhba3vxlo" path="res://Sounds/Click.wav" id="12_e4kk7"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_atr3m"]
+font_size = 33
+outline_size = 5
+outline_color = Color(0.152941, 0.152941, 0.152941, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_exq8g"]
+shader = ExtResource("3_lc3is")
+shader_parameter/dimensions = Vector2(1024, 600)
+shader_parameter/small_stars = 50.0
+shader_parameter/small_stars_far_size = 0.5
+shader_parameter/small_stars_near_size = 1.0
+shader_parameter/far_stars_color = Color(0.5, 0, 1, 1)
+shader_parameter/near_stars_color = Color(1, 1, 1, 1)
+shader_parameter/base_scroll_speed = 0.05
+shader_parameter/additional_scroll_speed = 0.05
+
+[sub_resource type="Gradient" id="Gradient_g4d6t"]
+colors = PackedColorArray(0, 1.8049e-08, 0.15702, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7rwii"]
+gradient = SubResource("Gradient_g4d6t")
+width = 960
+height = 640
+fill_from = Vector2(0.566406, 0.486328)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_2fh2q"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_i1l1m"]
+gradient = SubResource("Gradient_2fh2q")
+width = 480
+height = 320
+
+[sub_resource type="Curve2D" id="Curve2D_qspis"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -30, -22, 0, 0, 0, 0, 505, -21, 0, 0, 0, 0, 505, 342, 0, 0, 0, 0, -34, 345, 0, 0, 0, 0, -30, -22)
+}
+point_count = 5
+
+[node name="Main" type="Node"]
+process_mode = 3
+script = ExtResource("1_7gypy")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="DebugLabel" type="Label" parent="UI"]
+process_mode = 3
+visible = false
+offset_left = 203.0
+offset_top = 116.0
+offset_right = 243.0
+offset_bottom = 139.0
+theme_override_font_sizes/font_size = 20
+text = "qwe"
+script = ExtResource("2_x4bms")
+
+[node name="Score" type="Label" parent="UI"]
+offset_left = 273.0
+offset_top = 7.0
+offset_right = 477.0
+offset_bottom = 47.0
+theme_override_fonts/font = ExtResource("2_x5ias")
+text = "0"
+label_settings = SubResource("LabelSettings_atr3m")
+vertical_alignment = 1
+
+[node name="MenuButton" type="MenuButton" parent="UI"]
+process_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -35.0
+offset_top = 8.0
+offset_right = 277.0
+offset_bottom = 92.0
+grow_horizontal = 2
+scale = Vector2(0.175001, 0.415)
+theme_override_font_sizes/font_size = 76
+text = "[][]"
+
+[node name="Paused" type="Label" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -11.5
+offset_right = 60.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_x5ias")
+theme_override_font_sizes/font_size = 27
+text = "PAUSED"
+
+[node name="Filter Setup" parent="." instance=ExtResource("2_8ct72")]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+process_mode = 1
+handle_input_locally = false
+size = Vector2i(480, 320)
+render_target_update_mode = 4
+script = ExtResource("1_jqu6t")
+mob_scene = ExtResource("2_53xaw")
+
+[node name="BackGround" type="Sprite2D" parent="SubViewportContainer/SubViewport"]
+material = SubResource("ShaderMaterial_exq8g")
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_7rwii")
+centered = false
+
+[node name="PointLight2D" type="PointLight2D" parent="SubViewportContainer/SubViewport"]
+position = Vector2(-24, -61)
+texture = SubResource("GradientTexture2D_i1l1m")
+offset = Vector2(264, 221)
+
+[node name="Player" parent="SubViewportContainer/SubViewport" instance=ExtResource("1_qdr88")]
+position = Vector2(226, 168)
+speed = 3
+deceleration = 2
+
+[node name="MobPath" type="Path2D" parent="SubViewportContainer/SubViewport"]
+position = Vector2(1, 0)
+curve = SubResource("Curve2D_qspis")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="SubViewportContainer/SubViewport/MobPath"]
+position = Vector2(-30, -22)
+rotation = 0.00186916
+
+[node name="MobTimer" type="Timer" parent="SubViewportContainer/SubViewport"]
+autostart = true
+
+[node name="Audio" type="Node" parent="."]
+process_mode = 3
+
+[node name="BackGroundMusic" type="AudioStreamPlayer" parent="Audio"]
+process_mode = 3
+stream = ExtResource("2_jr6st")
+volume_db = -10.0
+autoplay = true
+bus = &"music"
+
+[node name="EnemyExplosion" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("11_kelbh")
+volume_db = -20.0
+bus = &"sfx"
+
+[node name="Click" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("12_e4kk7")
+bus = &"sfx"
+
+[connection signal="pressed" from="UI/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="timeout" from="SubViewportContainer/SubViewport/MobTimer" to="SubViewportContainer/SubViewport" method="_on_mob_timer_timeout"]
+[connection signal="finished" from="Audio/BackGroundMusic" to="." method="_on_back_ground_music_finished"]

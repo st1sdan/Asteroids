@@ -1,0 +1,148 @@
+[gd_scene load_steps=11 format=3 uid="uid://dw7jw7x376q7e"]
+
+[ext_resource type="Script" path="res://Scripts/end_screen.gd" id="1_37ccd"]
+[ext_resource type="FontFile" uid="uid://bclm34pt3j3nk" path="res://Config/PressStart2P-Regular.ttf" id="1_m6jui"]
+[ext_resource type="PackedScene" uid="uid://r8kncn7ys0bj" path="res://Scenes/filter_setup.tscn" id="2_hat4o"]
+[ext_resource type="Shader" path="res://Shaders/background_stars.gdshader" id="3_ltpou"]
+[ext_resource type="StyleBox" uid="uid://bc4wee5n5efk4" path="res://Config/menu.tres" id="3_om3yk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x4a5y"]
+shader = ExtResource("3_ltpou")
+shader_parameter/dimensions = Vector2(1024, 600)
+shader_parameter/small_stars = 50.0
+shader_parameter/small_stars_far_size = 0.5
+shader_parameter/small_stars_near_size = 1.0
+shader_parameter/far_stars_color = Color(0.5, 0, 1, 1)
+shader_parameter/near_stars_color = Color(1, 1, 1, 1)
+shader_parameter/base_scroll_speed = 0.05
+shader_parameter/additional_scroll_speed = 0.05
+
+[sub_resource type="Gradient" id="Gradient_62me3"]
+colors = PackedColorArray(0.0627451, 0, 0.188235, 1, 0.388235, 0, 0.694118, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eapvw"]
+gradient = SubResource("Gradient_62me3")
+width = 960
+height = 640
+fill_from = Vector2(0.71875, 0.228516)
+fill_to = Vector2(0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nf0qh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vmk2v"]
+
+[node name="End_screen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_37ccd")
+
+[node name="Restart" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = 107.5
+offset_right = 72.0
+offset_bottom = 138.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35.24, 4)
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("1_m6jui")
+theme_override_styles/hover = ExtResource("3_om3yk")
+theme_override_styles/focus = ExtResource("3_om3yk")
+text = "RESTART"
+flat = true
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.5
+offset_top = 28.5
+offset_right = 133.5
+offset_bottom = 59.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_m6jui")
+placeholder_text = "Enter Name"
+alignment = 1
+caret_blink = true
+
+[node name="Confirm" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.0
+offset_top = 73.0
+offset_right = 72.0
+offset_bottom = 104.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(35.24, 4)
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("1_m6jui")
+theme_override_styles/hover = ExtResource("3_om3yk")
+theme_override_styles/focus = ExtResource("3_om3yk")
+text = "CONFIRM"
+flat = true
+
+[node name="BackGround" type="Sprite2D" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_x4a5y")
+position = Vector2(240, 160)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_eapvw")
+
+[node name="Filter Setup" parent="." instance=ExtResource("2_hat4o")]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -123.0
+offset_top = 32.0
+offset_right = 91.0002
+offset_bottom = 117.0
+grow_horizontal = 2
+theme_override_fonts/normal_font = ExtResource("1_m6jui")
+theme_override_font_sizes/normal_font_size = 41
+theme_override_styles/focus = SubResource("StyleBoxEmpty_nf0qh")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_vmk2v")
+bbcode_enabled = true
+text = "[center]GAME OVER"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.784314, 0, 1)
+theme_override_fonts/font = ExtResource("1_m6jui")
+theme_override_font_sizes/font_size = 20
+text = "SCORE: "
+
+[connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Confirm" to="." method="_on_confirm_pressed"]

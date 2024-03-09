@@ -1,0 +1,106 @@
+[gd_scene load_steps=10 format=3 uid="uid://du5m2v5ise0m3"]
+
+[ext_resource type="Shader" path="res://Shaders/background_stars.gdshader" id="1_hyu31"]
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_v2606"]
+[ext_resource type="StyleBox" uid="uid://bc4wee5n5efk4" path="res://Config/menu.tres" id="2_4ln4g"]
+[ext_resource type="FontFile" uid="uid://bclm34pt3j3nk" path="res://Config/PressStart2P-Regular.ttf" id="2_icxuf"]
+[ext_resource type="Texture2D" uid="uid://dh5vaotcv1icx" path="res://Assets/Logo.png" id="2_le7p0"]
+[ext_resource type="PackedScene" uid="uid://r8kncn7ys0bj" path="res://Scenes/filter_setup.tscn" id="4_j7rb5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qih56"]
+shader = ExtResource("1_hyu31")
+shader_parameter/dimensions = Vector2(1024, 600)
+shader_parameter/small_stars = 50.0
+shader_parameter/small_stars_far_size = 0.5
+shader_parameter/small_stars_near_size = 1.0
+shader_parameter/far_stars_color = Color(0.5, 0, 1, 1)
+shader_parameter/near_stars_color = Color(1, 1, 1, 1)
+shader_parameter/base_scroll_speed = 0.05
+shader_parameter/additional_scroll_speed = 0.05
+
+[sub_resource type="Gradient" id="Gradient_vw1vc"]
+colors = PackedColorArray(0.0627451, 0, 0.188235, 1, 0.388235, 0, 0.694118, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_badm5"]
+gradient = SubResource("Gradient_vw1vc")
+width = 960
+height = 640
+fill_from = Vector2(0.71875, 0.228516)
+fill_to = Vector2(0, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_v2606")
+
+[node name="Logo" type="Sprite2D" parent="."]
+position = Vector2(244, 49)
+texture = ExtResource("2_le7p0")
+
+[node name="BackGround" type="Sprite2D" parent="."]
+z_index = -1
+material = SubResource("ShaderMaterial_qih56")
+position = Vector2(240, 160)
+scale = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture2D_badm5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 134.0
+offset_right = 340.0
+offset_bottom = 276.0
+scale = Vector2(1.12, 1)
+focus_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Start" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("2_icxuf")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("2_4ln4g")
+theme_override_styles/focus = ExtResource("2_4ln4g")
+text = "START"
+flat = true
+
+[node name="Leaderboard" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("2_icxuf")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("2_4ln4g")
+theme_override_styles/focus = ExtResource("2_4ln4g")
+text = "LEADERBOARD"
+flat = true
+
+[node name="Options" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("2_icxuf")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("2_4ln4g")
+theme_override_styles/focus = ExtResource("2_4ln4g")
+text = "OPTIONS"
+flat = true
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("2_icxuf")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/hover = ExtResource("2_4ln4g")
+theme_override_styles/focus = ExtResource("2_4ln4g")
+text = "QUIT"
+flat = true
+
+[node name="Filter Setup" parent="." instance=ExtResource("4_j7rb5")]
+
+[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Leaderboard" to="." method="_on_leaderboard_pressed"]
+[connection signal="pressed" from="VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
