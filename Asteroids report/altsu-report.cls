@@ -1,4 +1,3 @@
-% altsu-report.cls
 % Часть материала взято из шаблона для диссертаций. https://github.com/AndreyAkinshin/Russian-Phd-LaTeX-Dissertation-Template
 % Класс для оформления отчётов
 % на кафедре Вычислительной техники и электроники Алтайского государственного университета.
