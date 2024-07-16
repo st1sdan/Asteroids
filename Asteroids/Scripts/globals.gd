@@ -13,7 +13,7 @@ var sfx_volume : int = 5
 
 func _ready():
     SilentWolf.configure({
-        "api_key": "F31xtyHr6W5ze0JhDoW8x5XEY5MlN8zH1Z9P3fWS",
+        "api_key": "",
         "game_id": "asteroids",
         "log_level": 0
     })
